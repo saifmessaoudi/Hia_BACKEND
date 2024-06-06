@@ -7,6 +7,7 @@ import User from './models/user.model.js';
 import Reservation from './models/reservation.model.js';
 import Etablishment from './models/etablishment.model.js';
 import Food from './models/food.model.js';
+import router from "./routes/user.routes.js";
 
 
 dotenv.config();
@@ -23,10 +24,12 @@ connectDB();
 app.get('/', (req, res) => {
     res.status(201).json("Hello World");
 });
+app.use(express.json());
+app.use(express.static("public"));
+app.use("/user", router);
 
-
-app.listen(PORT, () => {
-    console.log(`Server is running on PORT ${PORT}`);
+app.listen(3030, () => {
+    console.log(`Server is running on PORT ${3030}`);
 }
 );
 
