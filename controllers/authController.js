@@ -8,7 +8,6 @@ export const registerUser = async (req, res) => {
     try {
         const {firstName,lastName, password, email} = req.body;
 
-        
         const existing = await User.findOne({ email });
 
         if ( existing) {
@@ -26,19 +25,14 @@ export const registerUser = async (req, res) => {
 
         const user = await newUser.save();
 
-        const authToken = jwt.sign(
-            { email: user.email, id: user._id },
-            process.env.JWT_SECRET,
-            { expiresIn: "1h" }
-        );
+        
 
-        const verificationToken = generateVerificationToken();
-        newUser.verificationToken = verificationToken;
+        
         await newUser.save();
 
         
 
-        res.status(200).json({ user: newUser, authToken, message: 'User registered successfully. Please check your SMS for verification.' });
+        res.status(200).json({ user: newUser, message: 'User registered successfully. Please check your SMS for verification.' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });
@@ -72,10 +66,7 @@ export const loginUser = async (req, res) => {
         const token = jwt.sign(
             {
                 userId: user._id,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                email: user.email,
-                token:user.JWT_KEY // Ajoutez d'autres informations utilisateur au besoin
+                token:user.JWT_KEY 
             },
             secretKey,
             { expiresIn: '1h' }
@@ -83,6 +74,7 @@ export const loginUser = async (req, res) => {
     
 
 
+        
         
         res.json({ token, user });
     } catch (error) {
