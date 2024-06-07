@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { registerUser,loginUser} from '../controllers/authController.js';
+import {updateUserProfile,updatelocation} from '../controllers/userController.js';
+
 import bcrypt from "bcrypt";
 import User from "../models/user.model.js";
 import { body } from 'express-validator';
@@ -21,4 +23,6 @@ router.post('/register', [
     .withMessage("Must be at least 6 chars long")
 ],Validate,registerUser);
 router.post('/login', loginUser);
+router.put('/updateprofile',updateUserProfile) ;
+router.put('/updatelocation',updatelocation) ;
 export default router;

@@ -71,6 +71,7 @@ export const loginUser = async (req, res) => {
             secretKey,
             { expiresIn: '1h' }
         );
+        
     
 
 
