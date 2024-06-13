@@ -13,6 +13,9 @@ import router from "./routes/user.routes.js";
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT;
+const HOST = '192.168.43.147' ; 
+
+
 
 app.use(morgan('dev'));
 app.use(cors());
@@ -28,7 +31,7 @@ app.use(express.json());
 app.use(express.static("public"));
 app.use("/user", router);
 
-app.listen(3030, () => {
+app.listen(process.env.PORT,HOST, () => {
     console.log(`Server is running on PORT ${3030}`);
 }
 );

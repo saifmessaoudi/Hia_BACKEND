@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { registerUser,loginUser} from '../controllers/authController.js';
-import {updateUserProfile,updatelocation} from '../controllers/userController.js';
+import {updateUserProfile,updatelocation,verifEmail,getUserById} from '../controllers/userController.js';
 
 import bcrypt from "bcrypt";
 import User from "../models/user.model.js";
@@ -25,4 +25,6 @@ router.post('/register', [
 router.post('/login', loginUser);
 router.put('/updateprofile',updateUserProfile) ;
 router.put('/updatelocation',updatelocation) ;
+router.get('/verifEmail',verifEmail) ; 
+router.post('/getuserbyid', getUserById);
 export default router;

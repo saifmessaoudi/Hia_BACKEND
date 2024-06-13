@@ -69,15 +69,10 @@ export const loginUser = async (req, res) => {
                 token:user.JWT_KEY 
             },
             secretKey,
-            { expiresIn: '1h' }
+            { expiresIn: '12h' }
         );
         
-    
-
-
-        
-        
-        res.json({ token, user });
+      res.json({ token, user });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });
