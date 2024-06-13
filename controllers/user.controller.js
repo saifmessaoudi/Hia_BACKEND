@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import { sendOTP, sendOTPEmail } from '../utils/otpUtils.js';
+import { sendOTP, sendOTPEmail, verifyOTP } from '../utils/otpUtils.js';
 import { generateOTP , verifyEmailOtp } from '../utils/otpUtils.js';
 import User from '../models/user.model.js';
 import bcrypt from 'bcrypt';
@@ -36,6 +36,21 @@ const verifyOtpEmail = async (req, res) => {
     }
 };
 
+const verifyOtpPhone = async (req, res) => {
+    const { phone, otp } = req.body;
+    try {
+        const isVerified = verifyOTP(phone, otp);
+        if (isVerified) {
+            res.status(200).json({ message: 'OTP verified successfully' });
+        } else {
+            res.status(400).json({ error: 'Invalid OTP' });
+        }
+    } catch (error) {
+        console.error('Error verifying OTP:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
 const changePassword = async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -67,4 +82,4 @@ const sendPhoneOtp = async (req, res) => {
     }
 };
 
-export default { sendEmail, verifyOtpEmail , changePassword, sendPhoneOtp};
+export default { sendEmail, verifyOtpEmail , changePassword, sendPhoneOtp,verifyOtpPhone};

@@ -28,6 +28,7 @@ router.put('/updateprofile',updateUserProfile) ;
 router.put('/updatelocation',updatelocation) ;
 router.post("/send-email", userController.sendEmail);
 router.post("/verify-otp-email", userController.verifyOtpEmail);
+router.post("/verify-otp-phone", userController.verifyOtpPhone);
 router.post("/change-password", userController.changePassword);
 router.post("/facebook-login", facebookLogin);
 router.post("/send-phone-otp", userController.sendPhoneOtp);

@@ -55,7 +55,6 @@ const verifyOTP = (phoneNumber, otp) => {
     if (!record) {
         return false;
     }
-
     if (record.otp != otp) {
         return false;
     }
