@@ -1,6 +1,11 @@
 import nodemailer from 'nodemailer';
-import { sendOTPEmail } from '../utils/otpUtils.js';
+import { sendOTP, sendOTPEmail } from '../utils/otpUtils.js';
 import { generateOTP , verifyEmailOtp } from '../utils/otpUtils.js';
+import User from '../models/user.model.js';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import { validationResult } from 'express-validator';
+
 
 
 
@@ -31,4 +36,35 @@ const verifyOtpEmail = async (req, res) => {
     }
 };
 
-export default { sendEmail, verifyOtpEmail };
+const changePassword = async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        const user = await User.findOne ({ email });
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        user.password = hashedPassword;
+        await user.save();
+       
+        res.status(200).json({ message: 'Password updated successfully' });
+    } catch (error) {
+        console.error('Error updating password:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+const sendPhoneOtp = async (req, res) => {
+  
+    try {
+        const otp = generateOTP();
+        sendOTP(96887940, otp);
+        res.status(200).json({ message: 'OTP sent successfully' });
+    } catch (error) {
+        console.error('Error sending OTP:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
+export default { sendEmail, verifyOtpEmail , changePassword, sendPhoneOtp};

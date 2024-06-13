@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
     },
     phone: {
         type: String,
-        required: true,
+        required: false,
     },
     isVerified: {
         type: Boolean,
@@ -46,6 +46,7 @@ const userSchema = new mongoose.Schema({
             type : String,
         }
     ],
+
 
 
 }, {

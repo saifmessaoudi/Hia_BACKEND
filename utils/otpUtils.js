@@ -1,10 +1,11 @@
 import twilio from 'twilio';
 import sendEmail from './mailer.js';
 
-//const accountSid = process.env.TWILIO_ACCOUNT_SID;
-//const authToken = process.env.TWILIO_AUTH_TOKEN;
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const twilioPhoneNumber = process.env.TWILIO_PHONE_NUMBER;
 
-//const client = twilio(accountSid, authToken);
+const client = twilio(accountSid, authToken);
 
 const otpMemoryStore = {};
 const emailOptMemoryStore = {};
@@ -14,11 +15,15 @@ const generateOTP = () => {
 };
 
 const sendOTP = (phoneNumber, otp) => {
-    return client.messages.create({
+    client.messages.create({
         body: `Hia Application - Your verification code is ${otp}`,
-        to: phoneNumber,
-        from: twilioPhoneNumber
+         from: twilioPhoneNumber,
+        to: '+21696887940'
     });
+    otpMemoryStore[phoneNumber] = {
+        otp,
+        expiresAt: Date.now() + 5 * 60 * 1000
+    };
 };
 const sendOTPEmail = async (email, otp) => {
     const subject = 'Your OTP Code';
@@ -50,11 +55,8 @@ const verifyOTP = (phoneNumber, otp) => {
     if (!record) {
         return false;
     }
-    if (record.expiresAt < Date.now()) {
-        delete otpMemoryStore[phoneNumber]; 
-        return false;
-    }
-    if (record.otp !== otp) {
+
+    if (record.otp != otp) {
         return false;
     }
     return true;
