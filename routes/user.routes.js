@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { registerUser,loginUser , facebookLogin} from '../controllers/authController.js';
-import {updateUserProfile,updatelocation} from '../controllers/userController.js';
+import {updateUserProfile,updatelocation,verifEmail,getUserById} from '../controllers/userController.js';
 import userController from "../controllers/user.controller.js";
 
 import bcrypt from "bcrypt";
@@ -31,4 +31,6 @@ router.post("/verify-otp-email", userController.verifyOtpEmail);
 router.post("/change-password", userController.changePassword);
 router.post("/facebook-login", facebookLogin);
 router.post("/send-phone-otp", userController.sendPhoneOtp);
+router.get('/verifEmail',verifEmail) ; 
+router.post('/getuserbyid', getUserById);
 export default router;

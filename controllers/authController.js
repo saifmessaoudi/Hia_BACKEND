@@ -66,7 +66,7 @@ export const loginUser = async (req, res) => {
                 token:user.JWT_KEY 
             },
             secretKey,
-            { expiresIn: '1h' }
+            { expiresIn: '12h' }
         );
         
      res.json({ token, user });

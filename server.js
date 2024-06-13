@@ -14,6 +14,9 @@ import router from "./routes/user.routes.js";
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT;
+const HOST = '192.168.43.147' ; 
+
+
 
 app.use(morgan('dev'));
 app.use(cors());
