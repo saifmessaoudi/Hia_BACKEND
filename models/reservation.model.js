@@ -9,7 +9,6 @@ const reservationSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    
     items: [
         {
             food: {
