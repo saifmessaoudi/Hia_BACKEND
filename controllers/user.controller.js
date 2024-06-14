@@ -71,9 +71,17 @@ const changePassword = async (req, res) => {
 }
 
 const sendPhoneOtp = async (req, res) => {
-  
+  const {email} = req.body;
+  const {phone} = req.body;
     try {
         const otp = generateOTP();
+        console.log(otp);
+        const user = await User.findOne ({ email });
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+         user.phone = phone;
+        await user.save();
         sendOTP(96887940, otp);
         res.status(200).json({ message: 'OTP sent successfully' });
     } catch (error) {
