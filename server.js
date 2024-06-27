@@ -8,12 +8,13 @@ import Reservation from './models/reservation.model.js';
 import Etablishment from './models/etablishment.model.js';
 import Food from './models/food.model.js';
 import router from "./routes/user.routes.js";
+import establishementrouter from './routes/establishement.route.js';
 
 
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT;
-const HOST = '192.168.43.147' ; 
+
 
 
 
@@ -30,8 +31,10 @@ app.get('/', (req, res) => {
 app.use(express.json());
 app.use(express.static("public"));
 app.use("/user", router);
+app.use("/establishement", establishementrouter);
 
-app.listen(process.env.PORT,HOST, () => {
+
+app.listen(process.env.PORT, () => {
     console.log(`Server is running on PORT ${3030}`);
 }
 );

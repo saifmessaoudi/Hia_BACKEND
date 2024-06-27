@@ -27,4 +27,5 @@ router.put('/updateprofile',updateUserProfile) ;
 router.put('/updatelocation',updatelocation) ;
 router.get('/verifEmail',verifEmail) ; 
 router.post('/getuserbyid', getUserById);
+
 export default router;
