@@ -34,4 +34,5 @@ router.post("/facebook-login", facebookLogin);
 router.post("/send-phone-otp", userController.sendPhoneOtp);
 router.get('/verifEmail',verifEmail) ; 
 router.post('/getuserbyid', getUserById);
+router.post('/chooseFoodPreference', userController.chooseFoodPreference);
 export default router;

@@ -89,5 +89,22 @@ const sendPhoneOtp = async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
+ const chooseFoodPreference = async (req, res) => {
+    const { foodPreference , userId} = req.body;
+    try {
+      const user = await User.findById (userId);
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+    user.foodPreference = foodPreference;
+       
+        await user.save();
+        res.status(200).json({  user });
+    }
+    catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+    };
 
-export default { sendEmail, verifyOtpEmail , changePassword, sendPhoneOtp,verifyOtpPhone};
+export default { sendEmail, verifyOtpEmail , changePassword, sendPhoneOtp,verifyOtpPhone,chooseFoodPreference};
