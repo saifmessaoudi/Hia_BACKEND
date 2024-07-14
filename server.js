@@ -14,10 +14,6 @@ import establishementrouter from './routes/establishement.route.js';
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT;
-
-
-
-
 app.use(morgan('dev'));
 app.use(cors());
 
