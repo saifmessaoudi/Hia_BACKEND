@@ -9,6 +9,9 @@ import Etablishment from './models/etablishment.model.js';
 import Food from './models/food.model.js';
 import Category from './models/category.model.js';
 import router from "./routes/user.routes.js";
+import establishementrouter from './routes/establishement.route.js';
+import foodRouter from './routes/food.routes.js';
+import offerRouter from './routes/offer.route.js';
 
 
 dotenv.config();
@@ -35,7 +38,9 @@ app.get('/', (req, res) => {
 app.use(express.json());
 app.use(express.static("public"));
 app.use("/user", router);
-
+app.use("/establishement", establishementrouter);
+app.use("/food", foodRouter);
+app.use("/offer", offerRouter);
 
 
 

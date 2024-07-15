@@ -39,6 +39,11 @@ const etablishmentSchema = new mongoose.Schema({
     phone: {
         type: String,
     },
+    preferences: [
+        {
+            type: String,
+        },
+    ],
     averageRating: {
         type: Number,
         default: 0,

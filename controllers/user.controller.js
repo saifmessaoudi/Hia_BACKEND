@@ -38,6 +38,8 @@ const verifyOtpEmail = async (req, res) => {
 
 const verifyOtpPhone = async (req, res) => {
     const { phone, otp } = req.body;
+    console.log(phone);
+    console.log(otp);
     try {
         const isVerified = verifyOTP(phone, otp);
         if (isVerified) {
@@ -82,7 +84,8 @@ const sendPhoneOtp = async (req, res) => {
         }
          user.phone = phone;
         await user.save();
-        sendOTP(96887940, otp);
+        console.log(otp);
+       // sendOTP(96887940, otp);
         res.status(200).json({ message: 'OTP sent successfully' });
     } catch (error) {
         console.error('Error sending OTP:', error);

@@ -29,11 +29,11 @@ const foodSchema = new mongoose.Schema({
     image: {
         type: String,
     },
-    category: {
-        type:  mongoose.Schema.Types.ObjectId,
-        ref: "Category",
-        required: true,
-    },
+    category: [
+        {
+            type: String,
+        }
+    ],
     etablishment: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Etablishment",
