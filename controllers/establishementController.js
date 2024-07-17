@@ -32,18 +32,18 @@ export const getAllEtablissements = async (req, res) => {
   export const addEstablishment = async (req, res) => {
 
     try { const establishement=  new Etablishment({
-      name: "KFC",
-      description: "test",
-      langitude: 33.00000,
-      latitude: 33.00000,
-      address: "test",
-      image : "test",
-      phone : "test",
-      preferences : ["test"],
-      averageRating : 0,
+      name: "Pizza Chrono",
+      description: "when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+      langitude: 10.303640,
+      latitude: 36.740130,
+      address: "P8Q4+P4X, Ez Zahra",
+      image : "https://lh5.googleusercontent.com/p/AF1QipNQGvoH3pYvxjCMHlAg6nOPrw6Jm7WEOM6oJSBK=w408-h306-k-no",
+      phone : "99745628",
+      preferences : ["Vegan", "Fast Food"],
+      averageRating : 3,
       isOpened : true,
       foods : [],
-      reviews : []
+      reviews : [],
     });
       await establishement.save();
       res.status(201).json(establishement);

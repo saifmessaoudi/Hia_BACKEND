@@ -8,6 +8,9 @@ const offerSchema = new mongoose.Schema({
     description : {
         type: String,
     },
+    price : {
+        type: Number,
+    },
     image : {
         type: String,
     },
