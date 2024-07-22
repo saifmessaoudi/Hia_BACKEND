@@ -4,20 +4,31 @@ import Food from '../models/food.model.js';
 
 
 export const getAllEtablissements = async (req, res) => {
-    try {
-      const etablissements = await Etablishment.find().select("-__v");
-      res.status(200).json(etablissements);
-    } catch (error) {
-      console.error("Error fetching etablissements:", error);
-      res.status(500).json({ error: "Internal Server Error" });
-    }
-  };
+  try {
+    const etablissements = await Etablishment.find()
+      .select("-__v")
+      .populate({
+        path: "foods",
+        model: "Food", // Ensure Mongoose uses the correct model for the 'foods' field
+        populate: {
+          path: "etablishment",
+          model: "Etablishment", // Ensure Mongoose uses the correct model for the 'etablissement' field
+          select: "-__v"
+        }
+      });
+    res.status(200).json(etablissements);
+  } catch (error) {
+    console.error("Error fetching etablissements:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 
   export const getEstablishmentDetail = async (req, res) => {
     const { id } = req.body; 
   
     try {
-      const Etablishment = await Etablishment.findById(id);
+      const Etablishment = await Etablishment.findById(id).populate('foods');
       if (!Etablishment) {
         return res.status(404).json({ message: 'Etablishment not found' });
       }
