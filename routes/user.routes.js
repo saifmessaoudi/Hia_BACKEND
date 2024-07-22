@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { registerUser,loginUser , facebookLogin} from '../controllers/authController.js';
-import {updateUserProfile,updatelocation,verifEmail,getUserById} from '../controllers/userController.js';
+import {updateUserProfile,updatelocation,verifEmail,getUserById,addFoodsToFavourites,removeFoodsFromFavourites,getFavouriteProductsByUserID,verifFoodFavourite} from '../controllers/userController.js';
 import userController from "../controllers/user.controller.js";
 
 import bcrypt from "bcrypt";
@@ -35,4 +35,9 @@ router.post("/send-phone-otp", userController.sendPhoneOtp);
 router.get('/verifEmail',verifEmail) ; 
 router.post('/getuserbyid', getUserById);
 router.post('/chooseFoodPreference', userController.chooseFoodPreference);
+router.put('/addFoodsToFavourites', addFoodsToFavourites);
+router.put('/removeFoodsFromFavourites', removeFoodsFromFavourites);
+router.post('/getFavouriteProductsByUserID', getFavouriteProductsByUserID);
+router.get('/verifFoodFavourite', verifFoodFavourite);
+
 export default router;
