@@ -207,9 +207,7 @@ export const verifFoodFavourite = async (req, res) => {
 
     const foodIds = user.favoriteFood;
 
-    if (foodIds.length === 0) {
-      return res.status(404).json({ message: 'Favorite food list is empty' });
-    } 
+    
 
     const foodExists = user.favoriteFood.some(favFood => favFood.equals(idfood));
     if (!foodExists) {

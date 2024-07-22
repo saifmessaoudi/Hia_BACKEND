@@ -38,6 +38,6 @@ router.post('/chooseFoodPreference', userController.chooseFoodPreference);
 router.put('/addFoodsToFavourites', addFoodsToFavourites);
 router.put('/removeFoodsFromFavourites', removeFoodsFromFavourites);
 router.post('/getFavouriteProductsByUserID', getFavouriteProductsByUserID);
-router.get('/verifFoodFavourite', verifFoodFavourite);
+router.post('/verifFoodFavourite', verifFoodFavourite);
 
 export default router;
