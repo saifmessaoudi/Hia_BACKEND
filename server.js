@@ -17,7 +17,7 @@ import offerRouter from './routes/offer.route.js';
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT;
-const HOST = '0.0.0.0' ; 
+ 
 
 
 
@@ -44,7 +44,7 @@ app.use("/offer", offerRouter);
 
 
 
-app.listen(PORT,HOST, () => {
+app.listen(PORT, () => {
     console.log(`Server is running on PORT ${PORT}`);
 }
 );
