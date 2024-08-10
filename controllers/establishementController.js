@@ -9,13 +9,22 @@ export const getAllEtablissements = async (req, res) => {
       .select("-__v")
       .populate({
         path: "foods",
-        model: "Food", // Ensure Mongoose uses the correct model for the 'foods' field
-        populate: {
-          path: "etablishment",
-          model: "Etablishment", // Ensure Mongoose uses the correct model for the 'etablissement' field
-          select: "-__v"
-        }
-      });
+        model: "Food", 
+        populate: [
+          {
+            path: "etablishment",
+            model: "Etablishment",
+            select: "-__v"
+          },
+          {
+            path: "reviews.user",
+            model: "User", // Assuming you have a User model
+            select: "firstName lastName email" // Adjust the fields as necessary
+          }
+        ]
+
+      })
+      .populate("reviews.user");
     res.status(200).json(etablissements);
   } catch (error) {
     console.error("Error fetching etablissements:", error);
