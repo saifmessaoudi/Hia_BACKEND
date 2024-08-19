@@ -24,10 +24,6 @@ const offerSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Etablishment",
     },
-    remise : {
-        type: Number,
-        required: true,
-    },
     validFrom : {
         type: Date,
         required: true,

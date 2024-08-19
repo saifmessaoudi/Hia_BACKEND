@@ -12,6 +12,7 @@ import router from "./routes/user.routes.js";
 import establishementrouter from './routes/establishement.route.js';
 import foodRouter from './routes/food.routes.js';
 import offerRouter from './routes/offer.route.js';
+import reservationRouter from './routes/reservation.route.js';
 
 
 dotenv.config();
@@ -41,6 +42,7 @@ app.use("/user", router);
 app.use("/establishement", establishementrouter);
 app.use("/food", foodRouter);
 app.use("/offer", offerRouter);
+app.use("/reservation", reservationRouter);
 
 
 
