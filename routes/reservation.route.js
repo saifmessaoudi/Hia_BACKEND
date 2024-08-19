@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { addReservation } from "../controllers/reservation.controller.js";
+import { addReservation , getReservationByUserID } from "../controllers/reservation.controller.js";
 
 const reservationRouter = Router();
 
 reservationRouter.post("/addReservation", addReservation);
+reservationRouter.get("/getReservationByUserID/:userId", getReservationByUserID);
 
 export default reservationRouter;
