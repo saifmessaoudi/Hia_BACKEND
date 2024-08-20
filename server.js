@@ -17,7 +17,7 @@ import reservationRouter from './routes/reservation.route.js';
 
 dotenv.config();
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT ||3030;
  
 
 
