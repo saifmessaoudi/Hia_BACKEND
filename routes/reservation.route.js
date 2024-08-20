@@ -6,4 +6,4 @@ const reservationRouter = Router();
 reservationRouter.post("/addReservation", addReservation);
 reservationRouter.get("/getReservationByUserID/:userId", getReservationByUserID);
 
-export default reservationRouter;
+export default reservationRouter; 

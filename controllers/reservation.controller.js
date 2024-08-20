@@ -65,7 +65,7 @@ export const getReservationByUserID = async (req, res) => {
             return res.status(404).json({ error: "User not found" });
         }
 
-        const reservations = await Reservation.find({ user: userId }).populate("etablishment").populate("items.food");
+        const reservations = await Reservation.find({ user: userId }).populate("etablishment").populate("items.food").populate("items.food.reviews");
         res.status(200).json(reservations);
     }
     catch (error){
