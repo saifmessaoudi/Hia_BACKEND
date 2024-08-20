@@ -14,6 +14,9 @@ const offerSchema = new mongoose.Schema({
     image : {
         type: String,
     },
+    remise : {
+        type : Number, 
+    },
     food : [
         {
             type: mongoose.Schema.Types.ObjectId,
