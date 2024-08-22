@@ -175,7 +175,7 @@ export const removeFoodsFromFavourites = async (req, res) => {
   }
 };
 export const getFavouriteProductsByUserID = async (req, res) => {
-  const { iduser } = req.body;  // Ideally, this should be a query parameter or path parameter in a GET request
+  const { iduser } = req.body;  
 
   try {
     const user = await User.findById(iduser);

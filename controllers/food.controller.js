@@ -84,3 +84,17 @@ export const getReviewByFoodID = async (req, res) => {
     }
 }; 
 
+export const getFoodByID = async (req, res) => {
+    try {
+        const {idFood} = req.body;
+        const food = await Food.findById(idFood).populate("etablishment").populate("reviews.user");
+        if (!food) {
+            return res.status(404).json({ error: "Food not found" });
+        }
+        res.status(200).json(food);
+    } catch (error) {
+        console.error("Error fetching food:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+
