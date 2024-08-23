@@ -23,7 +23,8 @@ const foodSchema = new mongoose.Schema({
         type: String,
     },
     price: {
-        type: Number,
+        type: mongoose.Schema.Types.Decimal128,
+        required: true,
         
     },
     image: {
