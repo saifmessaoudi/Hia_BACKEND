@@ -7,17 +7,17 @@ export const addOffer = async (req, res) => {
 
     try { 
     const offer = new Offer({
-        name : "El Big Box",
+        name : "Box Chaneb",
         description : "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum,",
-        image : "https://glovo.dhmedia.io/image/stores-glovo/stores/4276c9f9ba3a3008055b064840cb511765978d31a3b4015b68862685685b803d?t=W3siYXV0byI6eyJxIjoibG93In19LHsicmVzaXplIjp7ImhlaWdodCI6MjI1fX1d",
+        image : "https://glovo.dhmedia.io/image/menus-glovo/products/f1e527b64386ab720591aee4e51bff7d9c862eb77fe68a8ea05d9134684e5cc5?t=W3siYXV0byI6eyJxIjoibG93In19LHsicmVzaXplIjp7IndpZHRoIjo2MDB9fV0=",
         food : [],
-        etablishment : "6697fb3bde7092641e549102",
+        etablishment : "66c9f7a51c13556c5c37ed2f",
         remise : 20,
         validFrom : today,
         validUntil : today.setDate(today.getDate() + 3),
         isAvailable : true,
-        quantity : 15,
-        price : 55
+        quantity : 10,
+        price : 60
     });
       await offer.save();
       res.status(201).json(offer);

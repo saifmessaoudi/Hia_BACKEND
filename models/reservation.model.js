@@ -11,9 +11,18 @@ const reservationSchema = new mongoose.Schema({
     },
     items: [
         {
+            type: {
+                type: String,
+                required: true,
+                enum: ['food', 'offer'],
+            },
             food: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "Food",
+            },
+            offer: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Offer",
             },
             quantity: {
                 type: Number,
