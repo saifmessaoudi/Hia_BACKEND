@@ -32,7 +32,7 @@ const reservationSchema = new mongoose.Schema({
         },
     ],
     totalPrice: {
-        type: mongoose.Schema.Types.Decimal128,
+        type: Number,
         required: true,
     },
     status: {
