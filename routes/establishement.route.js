@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {getAllEtablissements,getEstablishmentDetail,getProductsByEstablishmentID,addFoodsToEstablishment,addEstablishment} from '../controllers/establishementController.js';
+import {registerEstablishment , loginEstablishment} from '../controllers/authController.js';
 
 
 
@@ -13,5 +14,7 @@ establishementrouter.post('/add', addEstablishment);
  
 establishementrouter.post('/getProductsByEstablishmentID', getProductsByEstablishmentID);
 establishementrouter.post('/addFoodsToEstablishment', addFoodsToEstablishment);
+establishementrouter.post('/register', registerEstablishment);
+establishementrouter.post('/login', loginEstablishment);
 
 export default establishementrouter;

@@ -15,9 +15,20 @@ const reviewSchema = new mongoose.Schema({
 });
 
 const etablishmentSchema = new mongoose.Schema({
+    email: {
+        type: String,
+        unique: true,
+        
+    },
+    password: {
+        type: String,
+    },
+    isVerified: {
+        type: Boolean,
+        default: false,
+    },
     name: {
         type: String,
-        required: true,
     },
     description: {
         type: String,
