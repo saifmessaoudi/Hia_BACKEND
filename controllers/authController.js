@@ -185,3 +185,18 @@ export const loginEstablishment = async (req, res) => {
     
 }
 
+export const doesEmailExist = async (req, res) => {
+    const { email } = req.params;
+    try {
+        const user = await User.findOne({ email });
+        const etablishment = await Etablishment.findOne({ email });
+        if (user || etablishment) {
+            return res.json({ exists: true });
+        }
+        res.json({ exists: false });
+    } catch (error) {
+        console.error('Error checking email:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+

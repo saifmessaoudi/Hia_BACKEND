@@ -1,6 +1,6 @@
 import { Router } from "express";
 import {getAllEtablissements,getEstablishmentDetail,getProductsByEstablishmentID,addFoodsToEstablishment,addEstablishment} from '../controllers/establishementController.js';
-import {registerEstablishment , loginEstablishment} from '../controllers/authController.js';
+import {registerEstablishment , loginEstablishment , doesEmailExist} from '../controllers/authController.js';
 
 
 
@@ -16,5 +16,6 @@ establishementrouter.post('/getProductsByEstablishmentID', getProductsByEstablis
 establishementrouter.post('/addFoodsToEstablishment', addFoodsToEstablishment);
 establishementrouter.post('/register', registerEstablishment);
 establishementrouter.post('/login', loginEstablishment);
+establishementrouter.get('/doesEmailExist/:email', doesEmailExist);
 
 export default establishementrouter;
