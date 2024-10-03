@@ -200,3 +200,19 @@ export const doesEmailExist = async (req, res) => {
     }
 }
 
+export const doesAccountVerified = async (req, res) => {
+    const { email } = req.params;
+    try {
+        const user = await Etablishment
+            .findOne({ email })
+            .select('isVerified');
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.json({ isVerified: user.isVerified });
+    } catch (error) {
+        console.error('Error checking email:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
