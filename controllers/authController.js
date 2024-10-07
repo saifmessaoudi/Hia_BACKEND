@@ -1,4 +1,5 @@
 import User from "../models/user.model.js";
+import Etablishment from "../models/etablishment.model.js";
 import bcrypt from 'bcrypt';
 import generateVerificationToken from './generateVerificationToken.js';
 import jwt from 'jsonwebtoken';
@@ -119,5 +120,99 @@ export const facebookLogin = async (req, res) => {
     }
 }
         
+export const registerEstablishment = async (req, res) => {
+    try {
+        const {  email, password } = req.body;
 
+        const existing = await Etablishment.findOne({ email });
+         
+        if (existing) {
+            return res.status(400).json({ message: "Establishment already exists" });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const newEtablishment = new Etablishment({
+            email: req.body.email,
+            password: hashedPassword
+        });
+
+        await newEtablishment.save();
+
+        res.status(200).json({ etablishment: newEtablishment, message: 'Establishment registered successfully. Please check your email for verification.' });
+    }
+    catch (error) {
+        console.error("Error adding etablishment:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+}
+
+export const loginEstablishment = async (req, res) => {
+    const { email, password } = req.body;
+
+    // Validation des entrées
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
+
+    try {
+        const etablishment = await Etablishment.findOne({ email });
+
+        if (!etablishment) {
+            return res.status(401).json({ message: 'Invalid email' });
+        }
+        const validPassword = await bcrypt.compare(password, etablishment.password);
+        if (!validPassword) {
+            return res.status(401).json({ message: 'Invalid password' });
+        }
+       
+        const secretKey = process.env.JWT_SECRET || 'defaultSecret'; 
+        const token = jwt.sign(
+            {
+                userId: etablishment._id,
+                token:etablishment.JWT_KEY 
+            },
+            secretKey,
+            { expiresIn: '12h' }
+        );
+        
+     res.json({ token, etablishment });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+    
+}
+
+export const doesEmailExist = async (req, res) => {
+    const { email } = req.params;
+    try {
+        const user = await User.findOne({ email });
+        const etablishment = await Etablishment.findOne({ email });
+        if (user || etablishment) {
+            return res.json({ exists: true });
+        }
+        res.json({ exists: false });
+    } catch (error) {
+        console.error('Error checking email:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+export const doesAccountVerified = async (req, res) => {
+    const { email } = req.params;
+    try {
+        const user = await Etablishment
+            .findOne({ email })
+            .select('isVerified');
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.json({ isVerified: user.isVerified });
+    } catch (error) {
+        console.error('Error checking email:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
 

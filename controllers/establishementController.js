@@ -139,5 +139,7 @@ export const getAllEtablissements = async (req, res) => {
     }
   };
   
+
+  
   
   

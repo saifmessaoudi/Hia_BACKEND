@@ -185,12 +185,11 @@ export const getFavouriteProductsByUserID = async (req, res) => {
 
     const foodIds = user.favoriteFood;
 
-    if (foodIds && foodIds.length > 0) {
-      const foods = await Food.find({ '_id': { $in: foodIds } });
-      return res.status(200).json(foods);
-    } else {
-      return res.status(203).json({ message: 'Favorite food list is empty' });
+     if (!foodIds) {
+      return res.status(404).json({ message: 'Food not found' });
     }
+    const foods = await Food.find({ _id: { $in: foodIds } });
+     return res.status(200).json( foods );
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal server error' });
