@@ -37,6 +37,8 @@ const etablishmentSchema = new mongoose.Schema({
     },
     langitude: {
         type: Number,
+
+        
         
     },
     latitude: {

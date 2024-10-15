@@ -38,12 +38,12 @@ export const getAllEtablissements = async (req, res) => {
     const { id } = req.body; 
   
     try {
-      const Etablishment = await Etablishment.findById(id).populate('foods');
-      if (!Etablishment) {
+      const etablishment = await Etablishment.findById(id).populate('foods');
+      if (!etablishment) {
         return res.status(404).json({ message: 'Etablishment not found' });
       }
   
-      res.status(200).json(user);
+      res.status(200).json(etablishment);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Internal server error' });
