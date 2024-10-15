@@ -7,11 +7,11 @@ export const addOffer = async (req, res) => {
 
     try { 
     const offer = new Offer({
-        name : "Box Chaneb",
+        name : "Box 2024",
         description : "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum,",
         image : "https://glovo.dhmedia.io/image/menus-glovo/products/f1e527b64386ab720591aee4e51bff7d9c862eb77fe68a8ea05d9134684e5cc5?t=W3siYXV0byI6eyJxIjoibG93In19LHsicmVzaXplIjp7IndpZHRoIjo2MDB9fV0=",
         food : [],
-        etablishment : "66c9f7a51c13556c5c37ed2f",
+        etablishment : "66fefb026d14b65668ab5d9b",
         remise : 20,
         validFrom : today,
         validUntil : today.setDate(today.getDate() + 3),
