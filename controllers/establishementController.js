@@ -113,7 +113,6 @@ export const getAllEtablissements = async (req, res) => {
   export const addFoodsToEstablishment = async (req, res) => {
     const { establishmentId, foodId } = req.body;
   
-    console.log('Request body:', req.body);
   
     if (!establishmentId || !foodId) {
       return res.status(400).json({ message: 'Establishment ID and Food ID are required' });
