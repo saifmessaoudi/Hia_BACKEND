@@ -35,7 +35,7 @@ export const getAllEtablissements = async (req, res) => {
 
 
   export const getEstablishmentDetail = async (req, res) => {
-    const { id } = req.body; 
+    const { id } = req.params; 
   
     try {
       const etablishment = await Etablishment.findById(id).populate('foods');

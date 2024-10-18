@@ -9,7 +9,7 @@ const establishementrouter = Router();
 
 
 establishementrouter.get('/getAll', getAllEtablissements);
-establishementrouter.get('/getDetail', getEstablishmentDetail);
+establishementrouter.get('/getDetail/:id', getEstablishmentDetail);
 establishementrouter.post('/add', addEstablishment);
  
 establishementrouter.post('/getProductsByEstablishmentID', getProductsByEstablishmentID);
