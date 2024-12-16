@@ -82,7 +82,6 @@ export const addReservation = async (req, res) => {
             market: market ? market._id : undefined,
             date: new Date(),
         });
-
         await newReservation.save();
 
         // Emit the reservation to the appropriate channel
@@ -125,16 +124,16 @@ export const getReservationByUserID = async (req, res) => {
         reservations = await Reservation.populate(reservations, [
             {
                 path: 'etablishment',
-                model: 'Etablishment', 
+                model: 'Etablishment',
             },
             {
-                path: 'market', 
+                path: 'market',
                 model: 'Market',
             },
             { path: 'items.food', model: 'Food' },
             { path: 'items.offer', model: 'Offer' },
             { path: 'items.product', model: 'Product' },
-            { path: 'items.food.reviews' }  
+            { path: 'items.food.reviews' }
         ]);
 
         // Send the populated reservations back

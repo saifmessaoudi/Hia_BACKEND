@@ -1,28 +1,60 @@
 import Market from '../models/market.model.js';
 import Product from '../models/product.model.js'; 
+import Category from '../models/category.model.js'; 
+
 
 
 export const fetchAllMarkets = async (req, res) => {
   try {
-    const markets = await Market.find()
-      .select("-__v")  // Exclude the __v field
-      .populate({
-        path: "products",  // Populate the 'products' field in Market
-        populate: {
-          path: "market",  // Also populate the 'market' field inside each product
-          model: "Market",
-          select: "-__v"  // Exclude versioning field
+    let markets = await Market.find()
+      .select("-__v")
+      .populate([
+        {
+          path: "products",
+          model: "Product",
+          select: "-__v",
+          populate: {
+            path: "category",
+            model: "Category",
+            select: "name -_id"
+          }
         },
-        model: "Product",
-        select: "-__v"  // Exclude versioning field in products
+        {
+          path: "category",
+          model: "Category",
+          select: "name -_id"
+        }
+      ]);
+
+    // Transform the data to replace category objects with category names
+    markets = markets.map(market => {
+      const transformedProducts = market.products.map(product => {
+        // Replace the category object with the category name string
+        return {
+          ...product.toObject(),
+          category: product.category ? product.category.name : null
+        };
       });
 
-    res.status(200).json(markets);  // Return populated markets with products and their markets
+      // If you also have categories at the market level, transform them similarly:
+      const transformedMarketCategories = market.category.map(cat => cat.name);
+
+      return {
+        ...market.toObject(),
+        products: transformedProducts,
+        category: transformedMarketCategories
+      };
+    });
+
+    res.status(200).json(markets);
   } catch (error) {
     console.error("Error fetching markets:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+
+
 
   export const addMarket = async (req, res) => {
 
@@ -134,8 +166,7 @@ export const fetchAllMarkets = async (req, res) => {
         isAvailable,
         image,
         category,
-        remise,
-        remiseDeadline,
+       
 
         
         
@@ -179,4 +210,124 @@ export const fetchAllMarkets = async (req, res) => {
     }
   };
   
+ 
+  export const assignCategoryToProduct = async (req, res) => {
+    
+    try {
+      const { productId, categoryId } = req.body;
   
+      const product = await Product.findById(productId);
+      if (!product) {
+        return res.status(404).json({ error: "Produit non trouvé" });
+      }
+  
+      const market = await Market.findById(product.market);
+      if (!market) {
+        return res.status(404).json({ error: "Marché non trouvé pour ce produit" });
+      }
+  
+      const category = await Category.findById(categoryId);
+      if (!category) {
+        return res.status(404).json({ error: "Catégorie non trouvée" });
+      }
+  
+      if (!market.category.includes(categoryId)) {
+        market.category.push(categoryId);
+        await market.save();
+      }
+  
+      
+      product.category = [categoryId]; 
+      await product.save();
+  
+      res.status(200).json({
+        message: "Catégorie assignée avec succès au produit et mise à jour dans le marché",
+        product,
+      });
+    } catch (error) {
+      console.error("Erreur lors de l'affectation de la catégorie :", error);
+      res.status(500).json({ error: "Erreur interne du serveur" });
+    }
+  };
+  
+  
+  export const getMarketCategories = async (req, res) => {
+    try {
+      const { marketId } = req.body;
+  
+      // Fetch market by ID and populate categories
+      const market = await Market.findById(marketId).populate("category", "-__v");
+  
+      if (!market) {
+        return res.status(404).json({ error: "Marché non trouvé" });
+      }
+  
+      res.status(200).json({
+       
+        categories: market.category,
+      });
+    } catch (error) {
+      console.error("Erreur lors de la récupération des catégories du marché :", error);
+      res.status(500).json({ error: "Erreur interne du serveur" });
+    }
+  };
+  export const addCategoryToMarket = async (req, res) => {
+    try {
+      const { marketId } = req.params;
+      const { categoryId } = req.body;
+  
+      // Fetch market by ID
+      const market = await Market.findById(marketId);
+      if (!market) {
+        return res.status(404).json({ error: "Marché non trouvé" });
+      }
+  
+      // Check if the category is already assigned
+      if (market.category.includes(categoryId)) {
+        return res.status(400).json({ message: "La catégorie est déjà assignée à ce marché" });
+      }
+  
+      // Push category to the market
+      market.category.push(categoryId);
+      await market.save();
+  
+      res.status(200).json({
+        message: "Catégorie ajoutée avec succès au marché",
+        market,
+      });
+    } catch (error) {
+      console.error("Erreur lors de l'ajout de la catégorie au marché :", error);
+      res.status(500).json({ error: "Erreur interne du serveur" });
+    }
+  };
+  export const removeCategoryFromMarket = async (req, res) => {
+    try {
+      const { marketId } = req.params;
+      const { categoryId } = req.body;
+  
+      // Fetch market by ID
+      const market = await Market.findById(marketId);
+      if (!market) {
+        return res.status(404).json({ error: "Marché non trouvé" });
+      }
+  
+      // Check if the category exists in the market
+      const categoryIndex = market.category.indexOf(categoryId);
+      if (categoryIndex === -1) {
+        return res.status(400).json({ message: "La catégorie n'est pas assignée à ce marché" });
+      }
+  
+      // Remove the category from the market
+      market.category.splice(categoryIndex, 1);
+      await market.save();
+  
+      res.status(200).json({
+        message: "Catégorie retirée avec succès du marché",
+        market,
+      });
+    } catch (error) {
+      console.error("Erreur lors de la suppression de la catégorie du marché :", error);
+      res.status(500).json({ error: "Erreur interne du serveur" });
+    }
+  };
+ 

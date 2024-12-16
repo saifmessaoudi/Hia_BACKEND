@@ -34,6 +34,13 @@ const marketSchema = new mongoose.Schema({
             ref: "Product",
         },
     ],
+    category: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Category",
+          required: [true, "Une catégorie est requise"], 
+        },
+      ],
     
     
     isOpened: {
