@@ -87,32 +87,69 @@ export const fetchAllMarkets = async (req, res) => {
 
 
 
-  export const getProductsByMarketID = async (req, res) => {
-    const { id} = req.query;  // Get id, page, and batch from query parameters
-   // const skip = (page - 1) * batch;
+
+  export const getProductsByMarketIDAndCategory = async (req, res) => {
+    const { id, category, page = 1, batch = 5 } = req.query;
+
+    const skip = (page - 1) * batch;
 
     try {
+        // Fetch the market
         const market = await Market.findById(id).lean();
         if (!market) {
             return res.status(404).json({ message: 'Market not found' });
         }
 
+        // Get all product IDs in the market
         const productIds = Array.isArray(market.products) ? market.products : [];
         if (productIds.length === 0) {
             return res.status(404).json({ message: 'No products found for this market' });
         }
 
-        const products = await Product.find({ '_id': { $in: productIds } })
-            .select("-__v")
-            .populate("market")
-            
+        // Prepare the query
+        let query = { '_id': { $in: productIds } };
 
-        res.status(200).json(products);  // Send the paginated products as a response
+        if (category) {
+            query.category = category; // Filter by specific category
+        }
+
+        // Fetch products and populate the category field
+        const products = await Product.find(query)
+            .populate('category', 'name') // Assuming `category` is a reference to the Category model
+            .select("-__v -createdAt -updatedAt") // Exclude unnecessary fields
+            .skip(parseInt(skip))
+            .limit(parseInt(batch))
+            .lean(); // Return plain JavaScript objects
+
+        if (products.length === 0) {
+            return res.status(404).json({ message: `No products found for category '${category}' in this market` });
+        }
+
+        if (!category) {
+            // Group products by category name
+            const groupedProducts = products.reduce((acc, product) => {
+                const categoryName = product.category?.name || 'Uncategorized';
+                if (!acc[categoryName]) {
+                    acc[categoryName] = [];
+                }
+                acc[categoryName].push(product);
+                return acc;
+            }, {});
+
+            return res.status(200).json(groupedProducts);
+        }
+
+        // If category is specified, return the products directly
+        res.status(200).json(products);
     } catch (error) {
         console.error("Error fetching products:", error);
         res.status(500).json({ error: "Internal Server Error" });
     }
 };
+
+
+
+
 
 
 
@@ -251,9 +288,9 @@ export const fetchAllMarkets = async (req, res) => {
   };
   
   
-  export const getMarketCategories = async (req, res) => {
+  export const  getMarketCategories = async (req, res) => {
     try {
-      const { marketId } = req.body;
+      const { marketId } = req.query;
   
       // Fetch market by ID and populate categories
       const market = await Market.findById(marketId).populate("category", "-__v");
