@@ -144,4 +144,56 @@ export const getReservationByUserID = async (req, res) => {
     }
 };
 
+export const getReservationByEtablishmentID = async (req, res) => {
+    try {
+        const { etablishmentId } = req.params;
+
+        // Check if etablishment exists
+        const etablishment = await Etablishment.findById(etablishmentId);
+        if (!etablishment) {
+            return res.status(404).json({ error: "Etablishment not found" });
+        }
+
+        // Fetch reservations by etablishment
+        let reservations = await Reservation.find({ etablishment: etablishmentId });
+
+        // If there are no reservations, return an empty array
+        if (reservations.length === 0) {
+            return res.status(200).json([]);
+        }
+
+        // Populate reservations
+        reservations = await Reservation.populate(reservations, [
+            {
+                path: 'etablishment',
+                model: 'Etablishment', 
+            },
+            {
+                path: 'user',
+                model: 'User', 
+            }, 
+            { path: 'items.food', model: 'Food' },
+            { path: 'items.offer', model: 'Offer' },
+            { path: 'items.product', model: 'Product' },
+            { path: 'items.food.reviews' }  
+        ]);
+
+        // Send the populated reservations back
+        res.status(200).json(reservations);
+    }
+    catch (error) {
+        console.error("Error fetching reservations:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+}
+             
+
+    
+
+
+            
+             
+         
+                 
+
 

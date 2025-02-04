@@ -1,5 +1,6 @@
 import Etablishment from '../models/etablishment.model.js';
 import Food from '../models/food.model.js'; 
+import bcrypt from 'bcrypt';
 
 
 
@@ -34,7 +35,7 @@ export const getAllEtablissements = async (req, res) => {
 
 
   export const getEstablishmentDetail = async (req, res) => {
-    const { id } = req.body; 
+    const { id } = req.params; 
   
     try {
       const etablishment = await Etablishment.findById(id).populate('foods');
@@ -48,45 +49,48 @@ export const getAllEtablissements = async (req, res) => {
       res.status(500).json({ message: 'Internal server error' });
     }
   };
-
+  
   export const addEstablishment = async (req, res) => {
-
-    /*name: "Pizza Chrono",
-    description: "when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-    langitude: 10.303640,
-    latitude: 36.740130,
-    address: "P8Q4+P4X, Ez Zahra",
-    image : "https://lh5.googleusercontent.com/p/AF1QipNQGvoH3pYvxjCMHlAg6nOPrw6Jm7WEOM6oJSBK=w408-h306-k-no",
-    phone : "99745628",
-    preferences : ["Vegan", "Fast Food"],
-    averageRating : 3,
-    isOpened : true,
-    foods : [],
-    reviews : [],*/
-    const { name, description, langitude, latitude, address, image } = req.body;
-     try {
-      const etablishment = new Etablishment({
-        name,
-        description,
-        langitude,
-        latitude,
-        address,
-        image,
-        phone : "99745628",
-        preferences : ["Sugar"],
-        averageRating : 0,
-        isOpened : true,
-        foods : [],
-        reviews : [],
-      });
-      await etablishment.save();
-      res.status(201).json(etablishment);
-    }
-    catch (error) {
-      console.error("Error adding etablishment:", error);
-      res.status(500).json({ error: "Internal Server Error" });
-    }
-  }
+      const { name, description, langitude, latitude, address, image, email, password } = req.body;
+  
+      try {
+          // Check if the establishment already exists
+          const existing = await Etablishment.findOne({ email });
+          if (existing) {
+              return res.status(400).json({ message: "Establishment already exists" });
+          }
+  
+          // Hash the password
+          const hashedPassword = await bcrypt.hash(password, 10);
+  
+          // Create a new establishment
+          const etablishment = new Etablishment({
+              name,
+              description,
+              langitude,
+              latitude,
+              address,
+              image,
+              email,
+              password: hashedPassword,
+              phone: "99745628",
+              preferences: ["Sugar"],
+              averageRating: 0,
+              isOpened: true,
+              foods: [],
+              reviews: [],
+          });
+  
+          // Save the establishment
+          await etablishment.save();
+  
+          // Respond with the created establishment
+          res.status(201).json({ etablishment, message: 'Establishment registered and added successfully. Please check your email for verification.' });
+      } catch (error) {
+          console.error("Error adding or registering establishment:", error);
+          res.status(500).json({ error: "Internal Server Error" });
+      }
+  };
   
   export const getProductsByEstablishmentID = async (req, res) => {
     const { id } = req.body;
@@ -109,7 +113,6 @@ export const getAllEtablissements = async (req, res) => {
   export const addFoodsToEstablishment = async (req, res) => {
     const { establishmentId, foodId } = req.body;
   
-    console.log('Request body:', req.body);
   
     if (!establishmentId || !foodId) {
       return res.status(400).json({ message: 'Establishment ID and Food ID are required' });

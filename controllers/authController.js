@@ -157,7 +157,28 @@ export const loginEstablishment = async (req, res) => {
     }
 
     try {
-        const etablishment = await Etablishment.findOne({ email });
+        //find etablishment without createAt updateAt and -v    
+        const etablishment = await Etablishment.findOne({
+            email
+        }).select('-createdAt -updatedAt -__v')
+        .populate({
+            path: "foods",
+            model: "Food", 
+            populate: [
+              {
+                path: "etablishment",
+                model: "Etablishment",
+                select: "-__v"
+              },
+              {
+                path: "reviews.user",
+                model: "User", 
+                select: "firstName lastName email" 
+              }
+            ]
+    
+          })
+          .populate("reviews.user");
 
         if (!etablishment) {
             return res.status(401).json({ message: 'Invalid email' });
@@ -176,8 +197,11 @@ export const loginEstablishment = async (req, res) => {
             secretKey,
             { expiresIn: '12h' }
         );
+
+        //return token and etablishment without create at update at and -v
         
-     res.json({ token, etablishment });
+        res.json({ token, etablishment });
+        
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });
