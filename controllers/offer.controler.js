@@ -14,11 +14,8 @@ now.setSeconds(now.getSeconds() + 5000
         description : "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum,",
         image : "https://glovo.dhmedia.io/image/menus-glovo/products/f1e527b64386ab720591aee4e51bff7d9c862eb77fe68a8ea05d9134684e5cc5?t=W3siYXV0byI6eyJxIjoibG93In19LHsicmVzaXplIjp7IndpZHRoIjo2MDB9fV0=",
         food : [],
-<<<<<<< HEAD
+
         etablishment : "670ef0070aa7bd801d7bfd78",
-=======
-        etablishment : "66fefb026d14b65668ab5d9b",
->>>>>>> 6d9c0d54cffc701fbd8e88745b68abe1b91c3918
         remise : 20,
         validFrom : today,
         validUntil : now,
