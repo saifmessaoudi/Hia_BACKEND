@@ -11,6 +11,12 @@ const offerSchema = new mongoose.Schema({
     price : {
         type: Number,
     },
+    newPrice : {
+        type: Number,
+    },
+    note : {
+        type: String,
+    },
     image : {
         type: String,
     },
