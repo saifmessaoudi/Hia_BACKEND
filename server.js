@@ -9,6 +9,8 @@ import foodRouter from './routes/food.routes.js';
 import offerRouter from './routes/offer.route.js';
 import reservationRouter from './routes/reservation.route.js';
 import marketrouter from './routes/market.route.js';
+import categoryRouter from './routes/category.route.js'; 
+
 import { initializeSocket } from './utils/SocketConfig.js'; // Import the initialize function
 
 dotenv.config();
@@ -31,6 +33,7 @@ app.use("/food", foodRouter);
 app.use("/offer", offerRouter);
 app.use("/reservation", reservationRouter);
 app.use("/market", marketrouter);
+app.use("/category", categoryRouter);
 
 app.get('/', (req, res) => {
     res.status(200).json("Hello World");

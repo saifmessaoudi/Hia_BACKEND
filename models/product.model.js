@@ -1,45 +1,52 @@
 import mongoose from "mongoose";
 
-
-const produitSchema = new mongoose.Schema({
+const produitSchema = new mongoose.Schema(
+  {
     name: {
-        type: String,
-        required: true,
+      type: String,
+      required: [true, "Le nom du produit est requis"],
+      trim: true, 
     },
     description: {
-        type: String,
+      type: String,
+      trim: true,
     },
     price: {
-        type: Number,
-        required: true,
-        
+      type: Number,
+      required: [true, "Le prix du produit est requis"],
+      min: [0, "Le prix ne peut pas être négatif"],
     },
     image: {
-        type: String,
+      type: String,
+      trim: true,
     },
-    category: [
-        {
-            type: String,
-        }
-    ],
-    market: {
+    category: 
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Market",
+        ref: "Category",
+        required: [true, "Une catégorie est requise"], 
+      },
+    
+    market: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Market",
     },
     isAvailable: {
-        type: Boolean,
-        default: true,
+      type: Boolean,
+      default: true,
     },
-    remise : {
-        type: Number,
-        default: 0,
+    remise: {
+      type: Number,
+      default: 0,
+      min: [0, "La remise ne peut pas être négative"],
+      max: [100, "La remise ne peut pas dépasser 100%"], 
     },
-    remiseDeadline : {
-        type: Date,
+    remiseDeadline: {
+      type: Date,
     },
+  },
+  
+);
 
-}, {
-    timestamps: true,
-});
 const Product = mongoose.model("Product", produitSchema);
 export default Product;

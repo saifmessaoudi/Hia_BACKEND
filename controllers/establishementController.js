@@ -142,6 +142,52 @@ export const getAllEtablissements = async (req, res) => {
     }
   };
   
+export const updateEstablishment = async (req, res) => {
+  const { id } = req.params;
+  const { name, phone, email, image , address, langitude , latitude} = req.body;
+
+  try {
+    // Check if establishment exists
+    const establishment = await Etablishment.findById(id);
+    if (!establishment) {
+      return res.status(404).json({ message: 'Establishment not found' });
+    }
+
+    // If email is being updated, check if new email already exists
+    if (email && email !== establishment.email) {
+      const emailExists = await Etablishment.findOne({ email });
+      if (emailExists) {
+        return res.status(400).json({ message: 'Email already in use' });
+      }
+    }
+
+    // Update only the provided fields
+    const updateData = {};
+    if (name) updateData.name = name;
+    if (phone) updateData.phone = phone;
+    if (email) updateData.email = email;
+    if (image) updateData.image = image;
+    if (address) updateData.address = address;
+    if (image) updateData.langitude = langitude;
+    if (latitude) updateData.latitude = latitude;
+
+
+
+    const updatedEstablishment = await Etablishment.findByIdAndUpdate(
+      id,
+      { $set: updateData },
+      { new: true, runValidators: true }
+    );
+
+    res.status(200).json({
+      message: 'Establishment updated successfully',
+      establishment: updatedEstablishment
+    });
+  } catch (error) {
+    console.error('Error updating establishment:', error);
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
+};
 
   
   
